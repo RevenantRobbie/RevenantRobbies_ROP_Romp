@@ -6,3 +6,5 @@ I've been told I should post my progress to Github because future employers get 
 Unfortunately, my wall looks a bit grey, but not for long!
 
 So join me in my quest to complete the ROP Emporium and hopefully not develop cyberpsychosis on the way.
+
+Using Binja and Ropgadget btw
