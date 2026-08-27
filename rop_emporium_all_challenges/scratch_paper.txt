@@ -19,6 +19,25 @@ the plan:
 shoot, the calls are external, so I gotta figure that out
 seems like I could exploit some jmps in there with how everything is linked, but I gotta look into that more
 
+hmm
+we go from pwnme
+to callme_one at 0x400720
+to somewhere else at 0x4006c0
+to the external library
+
+so, in the actual function, this is the order:
+	push rbp
+	mov rbp, rsp
+	sub rsp, 0x30
+	mov QWORD PTR [rbp-0x18], rdi
+	mov QWORD PTR [rbp-0x20], rsi
+	mov QWORD PTR [rbp-0x28], rdx
+	
+ok, so the params are in the registers...
+rdi = deadbeef
+rsi = cafebabe
+rdx = d00df00d
+
 Split:
 Usefulstring:
 	addr: 00601060
