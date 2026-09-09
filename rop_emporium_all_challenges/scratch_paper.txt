@@ -1,5 +1,36 @@
 CTF Scratch Paper
 
+badchars:
+a lot of the cyclic chars are in the badchars so we're gonna have to use a custom cyclic instead
+010203040506070809101112131415161718192021222324252627282930
+
+rsp: 21222324
+looks like a 40 byte offset again
+good to know I can do it custom 
+
+funky gadgets:
+0x00000000004004ee : ret # stack aligner
+0x0000000000400634 : mov qword ptr [r13], r12 ; ret ; # store string
+0x000000000040069c : pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret # set r12 and 13 and some others (maybe just zero them?)
+0x00000000004006a3 : pop rdi ; ret # pop to rdi
+0x0000000000400628 : xor byte ptr [r15], r14b ; ret # surprise xor gadget to modify the written flag?
+0x400510 : printfile() 
+00400500 : pwnme()
+
+
+0: 0x7477742d66606b66
+1: 0x7477742d66606bc8 #0x0000000000000062
+2: 0x7477742d66606bc8 #0x000000000000ff62
+3: 0x7477742d66606b66
+4: 0x7477742d66606c66
+
+f: 0x7478742e67616c66
+
+target:7478742e67616c66
+
+heyyyy, I could use something like the xor gadget or the add gadget and just shift the addresses around a little bit to edit the whole string!!!
+
+
 
 write4:
 ok, so we need to open the file flag.txt
