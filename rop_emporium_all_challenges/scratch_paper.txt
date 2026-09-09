@@ -1,6 +1,37 @@
 CTF Scratch Paper
 
-Readme:
+
+write4:
+ok, so we need to open the file flag.txt
+the print_file func should do this neatly
+its stored in an external lib so we have to push the filename to rdi
+cyclic found an offset at 40
+
+segfault at 0x00007ffff7c008aa pwnme()
+that address is not the exact address, this is stored in an external lib
+however, we do jump there at addr 0x780f7f5533aa
+for god's sake, use si to go into the function, not ni, then you'll just jump to the end immediately and exit the whole thing!
+
+crap, we need to write flag to memory somewhere
+0x0000000000400628 : mov qword ptr [r14], r15 ; ret
+0x0000000000400690 : pop r14 ; pop r15 ; ret
+these should work!
+
+soo... where in memory do we write this???
+
+write to 0x601028?
+
+the plan:
+overflow the reader
+align stack
+write needed data to relevant registers
+	this includes manually writing the flag file path
+align stack
+jump to the print_file func
+bingo bango: flag!
+
+
+callme:
 cyclic found an offset of 40 again
 callme_one():
 	addr: 00400720
