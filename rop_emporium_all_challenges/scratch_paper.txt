@@ -1,4 +1,59 @@
 CTF Scratch Paper
+fluff:
+The plan
+
+same as last time 
+overflow stack and align
+write flag to text somewhere (and remember the addr!)
+read the flag at that addr
+
+offset found at 40
+store flag.txt at 0x601030
+at the end of pwn rax ends at 0xb
+
+xlat = rbx + al
+al = b
+
+First we need to set rdi to point somewhere in data
+(0x4003c0)
+00000000: 00 6c 69 62 66 6c 75 66 66 2e 73 6f 00 5f 5f 67  .libfluff.so.__g
+00000010: 6d 6f 6e 5f 73 74 61 72 74 5f 5f 00 70 72 69 6e  mon_start__.prin
+00000020: 74 5f 66 69 6c 65 00 70 77 6e 6d 65 00 5f 69 6e  t_file.pwnme._in
+00000030: 69 74 00 5f 66 69 6e 69 00 6c 69 62 63 2e 73 6f  it._fini.libc.so
+00000040: 2e 36 00 5f 5f 6c 69 62 63 5f 73 74 61 72 74 5f  .6.__libc_start_
+00000050: 6d 61 69 6e 00 5f 65 64 61 74 61 00 5f 5f 62 73  main._edata.__bs
+00000060: 73 5f 73 74 61 72 74 00 5f 65 6e 64 00 47 4c 49  s_start._end.GLI
+00000070: 42 43 5f 32 2e 32 2e 35 00 2e                    BC_2.2.5..
+
+
+
+
+then we need to use 0x00400628               xlat to set al
+note that xlat sets al based on rbx
+
+
+then we use this instruction to incrementally set [rdi] which is pointing somewhere in data to al
+0x0000000000400639 : stosb byte ptr [rdi], al ; ret
+then we need to loop this until we have a good rdi pointer that spells out "flag.txt"
+
+then we jump to the win (print file) function
+
+useful gadgets
+
+0x00000000004004e2 : add rsp, 8 ; ret | adds 8 to rsp
+0x00000000004009ce : ret | stack aligner
+0x000000000040054d : add byte ptr [rax], r8b ; ret | write to addr of rax
+0x00000000004006a3 : pop rdi ; ret | set rdi
+0040062a does ts
+
+0040062a  5a                 pop     rdx {__return_addr}
+0040062b  59                 pop     rcx {arg1}
+0040062c  4881c1f23e0000     add     rcx, 0x3ef2
+00400633  c4e2e8f7d9         bextr   rbx, rcx, rdx
+00400638  c3                 retn     {arg_10}
+
+uuuuuggggghhhhhhhhhhhhhhhhhh
+head hurty...
 
 badchars:
 a lot of the cyclic chars are in the badchars so we're gonna have to use a custom cyclic instead
